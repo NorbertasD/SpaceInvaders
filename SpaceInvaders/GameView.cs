@@ -17,10 +17,10 @@ namespace SpaceInvaders
 
         private void Initialize()
         {
-            GameConfig.WindowWidth = this.pbMain.Width;
-            GameConfig.WindowHeight = this.pbMain.Height;
+            GameConfig.Instance.WindowWidth = this.pbMain.Width;
+            GameConfig.Instance.WindowHeight = this.pbMain.Height;
 
-            timer.Interval = GameConfig.GameSpeed;
+            timer.Interval = GameConfig.Instance.GameSpeed;
 
             GameController = new GameController();
 
@@ -63,9 +63,9 @@ namespace SpaceInvaders
                 int lives = GameController.PlayerShip.Lives;
                 int score = GameController.Score;
                 int alienMoveInterval = GameController.AlienMoveInterval;
-                if (alienMoveInterval > GameConfig.AlienMoveIntervalMin)
+                if (alienMoveInterval > GameConfig.Instance.AlienMoveIntervalMin)
                 {
-                    alienMoveInterval -= GameConfig.AlienMoveIntervalDecrease;
+                    alienMoveInterval -= GameConfig.Instance.AlienMoveIntervalDecrease;
                 }
                 GameController = new GameController();
                 GC.Collect();
@@ -168,9 +168,9 @@ namespace SpaceInvaders
             StringFormat sf = new StringFormat();
             sf.Alignment = StringAlignment.Center;
             Rectangle rectangle = new Rectangle(0, pbMain.Height/6, this.Width, this.Height);
-            e.Graphics.DrawString("SPACE\nINVADERS", GameConfig.GameFontLarge, GameConfig.GameBrush, rectangle, sf);
+            e.Graphics.DrawString("SPACE\nINVADERS", GameConfig.Instance.GameFontLarge, GameConfig.Instance.GameBrush, rectangle, sf);
             rectangle.Y = pbMain.Height - pbMain.Height / 6;
-            e.Graphics.DrawString("Press Enter", GameConfig.GameFont, GameConfig.GameBrush, rectangle, sf);
+            e.Graphics.DrawString("Press Enter", GameConfig.Instance.GameFont, GameConfig.Instance.GameBrush, rectangle, sf);
         }
 
         private void pbMain_Paint(object sender, PaintEventArgs e)
@@ -203,7 +203,7 @@ namespace SpaceInvaders
             Rectangle rectangle = new Rectangle(x + margin, y + margin, width - margin * 2, height - margin * 2);
             e.Graphics.FillRectangle(new SolidBrush(Color.Black), x, y, width, height);
             e.Graphics.DrawRectangle(new Pen(Color.White, 3), rectangle);
-            e.Graphics.DrawString("Wave complete!\nOnto the next wave", GameConfig.GameFont, GameConfig.GameBrush, rectangle, sf);
+            e.Graphics.DrawString("Wave complete!\nOnto the next wave", GameConfig.Instance.GameFont, GameConfig.Instance.GameBrush, rectangle, sf);
         }
 
         private void DrawGameObjects(PaintEventArgs e)
@@ -250,7 +250,7 @@ namespace SpaceInvaders
 
         private void DrawInfo(PaintEventArgs e)
         {
-            e.Graphics.DrawString($"Score: {GameController.Score}<{GameController.GameCounter - 1}>", GameConfig.GameFont, GameConfig.GameBrush, 30, 20);
+            e.Graphics.DrawString($"Score: {GameController.Score}<{GameController.GameCounter - 1}>", GameConfig.Instance.GameFont, GameConfig.Instance.GameBrush, 30, 20);
 
             int x = 30;
             int y = pbMain.Height - Sprites.Instance.PlayerHealth[0].Height - 20;
@@ -274,7 +274,7 @@ namespace SpaceInvaders
             Rectangle rectangle = new Rectangle(x + margin, y + margin, width - margin * 2, height - margin * 2);
             e.Graphics.FillRectangle(new SolidBrush(Color.Black), x, y, width, height);
             e.Graphics.DrawRectangle(new Pen(Color.White, 3), rectangle);
-            e.Graphics.DrawString("Game Over\nPress Enter to restart\nor Esc to exit", GameConfig.GameFont, GameConfig.GameBrush, rectangle, sf);
+            e.Graphics.DrawString("Game Over\nPress Enter to restart\nor Esc to exit", GameConfig.Instance.GameFont, GameConfig.Instance.GameBrush, rectangle, sf);
         }
     }
 }

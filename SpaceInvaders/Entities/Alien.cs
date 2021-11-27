@@ -1,18 +1,23 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace SpaceInvaders.Entities
 {
     public class Alien : EntityBase
     {
-        public Alien(Image[] sprites) : base(sprites)
+        public Alien(Image[] sprites, int speed) : base(sprites)
         {
             Alive = true;
             Exploding = false;
+            Speed = speed;
         }
 
         public bool Alive { get; set; }
 
         public bool Exploding { get; set; }
+
+        private int Speed { get; }
+
 
         public void Shoot(Shot alienShot)
         {
@@ -37,6 +42,16 @@ namespace SpaceInvaders.Entities
             {
                 AnimationState = 0;
             }
+        }
+
+        public void MoveLeft()
+        {
+            X -= Speed;
+        }
+
+        public void MoveRight()
+        {
+            X += Speed;
         }
     }
 }

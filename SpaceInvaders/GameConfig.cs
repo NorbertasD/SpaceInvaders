@@ -2,79 +2,96 @@
 
 namespace SpaceInvaders
 {
-    public static class GameConfig
+    public class GameConfig
     {
+        private GameConfig() { }
+
+        private static GameConfig instance;
+
+        public static GameConfig Instance
+        {
+            get 
+            {
+                if(instance == null)
+                {
+                    instance = new GameConfig();
+                }
+                return instance;
+            }
+        }
+
+
         #region Window
-        public static int WindowWidth { get; set; }
+        public int WindowWidth { get; set; }
 
-        public static int WindowHeight { get; set; }
+        public int WindowHeight { get; set; }
 
-        public static readonly Font GameFont = new Font("BankGothic Md BT", 24);
+        public Font GameFont { get; set; } = new Font("BankGothic Md BT", 24);
 
-        public static readonly Font GameFontLarge = new Font("BankGothic Md BT", 42);
+        public Font GameFontLarge { get; set; } = new Font("BankGothic Md BT", 42);
 
-        public static readonly Brush GameBrush = new SolidBrush(Color.White);
+        public Brush GameBrush { get; set; } = new SolidBrush(Color.White);
         #endregion Window
 
         #region Speed
-        public const int GameSpeed = 15; //15
+        public int GameSpeed { get; set; } = 15; //15
 
-        public const int PlayerMoveSpeed = 5;
+        public int PlayerMoveSpeed { get; set; } = 5;
 
-        public const int PlayerShotSpeed = 10;//10
+        public int PlayerShotSpeed { get; set; } = 10; //10
 
-        public const int AlienShotSpeed = 6;
+        public int AlienShotSpeed { get; set; } = 6; //6
 
-        public const int AlienHorizontalMoveSpeed = 15;
+        public int AlienHorizontalMoveSpeed { get; set; } = 15;
 
-        public const int AlienVerticalMoveSpeed = 42;
+        public int AlienVerticalMoveSpeed { get; set; } = 42;
 
-        public const int AlienMoveIntervalInitial = 32;//32
+        public int AlienMoveIntervalInitial { get; set; } = 32; //32
 
-        public const int AlienMoveIntervalDecrease = 4;
+        public int AlienMoveIntervalDecrease { get; set; } = 4;
 
-        public const int AlienMoveIntervalMin = 16;
+        public int AlienMoveIntervalMin { get; set; } = 16;
 
-        public const int FlyingSaucerMoveSpeed = 3;
+        public int FlyingSaucerMoveSpeed { get; set; } = 3;
         #endregion Speed
 
         #region Enemies
-        public const int EnemyRows = 5;//5
+        public int EnemyRows { get; set; } = 5; //5
 
-        public const int EnemyColumns = 11;//11
+        public int EnemyColumns { get; set; } = 11; //11
 
-        public const int FreeWidth = 3;
+        public int FreeWidth { get; set; } = 3;
 
-        public const int VerticalGap = 5;
+        public int VerticalGap { get; set; } = 5;
 
-        public const int AlienShotCooldown = 30;
+        public int AlienShotCooldown { get; set; } = 30; //30
 
-        public const int FlyingSaucerSpawnInterval = 800;
+        public int FlyingSaucerSpawnInterval { get; set; } = 800;
 
-        public const int FlyingSaucerExplosionFrames = 15;
+        public int FlyingSaucerExplosionFrames { get; set; } = 15;
 
-        public static int AlienMinY { get; set; }
+        public int AlienMinY { get; set; }
 
-        public static readonly int[] AlienRowScoreValue = { 30, 20, 20, 10, 10 };
+        public int[] AlienRowScoreValue { get; set; } = { 30, 20, 20, 10, 10 };
 
-        public const int FlyingSaucerScore = 100;
+        public int FlyingSaucerScore { get; set; } = 100;
         #endregion Enemies
 
         #region Player
-        public const int InitialLives = 3;//3
+        public int InitialLives { get; set; } = 3; //3
 
-        public const int PlayerShotCooldown = 20;//20
+        public int PlayerShotCooldown { get; set; } = 20; //20
 
-        public const int FreePeriodAfterGameOver = 150;//150
+        public int FreePeriodAfterGameOver { get; set; } = 150; //150
         #endregion Player
 
         #region Blocks
-        public static readonly string[] BlockStructure
+        public string[] BlockStructure { get; set; }
             = { "####",
                 "####",
                 "#  #" };
 
-        public const int StructureCount = 4;
+        public int StructureCount { get; set; } = 4;
         #endregion Blocks
     }
 }

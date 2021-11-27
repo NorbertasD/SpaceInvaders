@@ -16,7 +16,7 @@ namespace SpaceInvaders
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            string projectDirectory = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, "Images");
+            string projectDirectory = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName, "Images");
 
             if(!Directory.Exists(projectDirectory))
             {

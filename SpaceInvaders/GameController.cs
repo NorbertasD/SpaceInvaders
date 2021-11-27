@@ -7,8 +7,6 @@ namespace SpaceInvaders
 {
     public class GameController
     {
-        //public Sprites Sprites { get; set; }
-
         public PlayerShip PlayerShip { get; set; }
 
         public Shot PlayerShot { get; set; }
@@ -56,57 +54,59 @@ namespace SpaceInvaders
 
             Random = new Random();
 
-            AlienMoveInterval = GameConfig.AlienMoveIntervalInitial;
+            AlienMoveInterval = GameConfig.Instance.AlienMoveIntervalInitial;
 
-            PlayerShip = new PlayerShip(Sprites.Instance.PlayerShip, GameConfig.InitialLives, GameConfig.PlayerMoveSpeed, 0, GameConfig.WindowWidth);
-            PlayerShip.X = (GameConfig.WindowWidth / 2) - (PlayerShip.Width / 2);
-            PlayerShip.Y = (GameConfig.WindowHeight - GameConfig.WindowHeight / 8);
+            PlayerShip = new PlayerShip(Sprites.Instance.PlayerShip, GameConfig.Instance.InitialLives,
+                GameConfig.Instance.PlayerMoveSpeed, 0, GameConfig.Instance.WindowWidth);
+            PlayerShip.X = (GameConfig.Instance.WindowWidth / 2) - (PlayerShip.Width / 2);
+            PlayerShip.Y = (GameConfig.Instance.WindowHeight - GameConfig.Instance.WindowHeight / 8);
 
-            GameConfig.AlienMinY = PlayerShip.Y;
+            GameConfig.Instance.AlienMinY = PlayerShip.Y;
 
-            PlayerShot = new Shot(Sprites.Instance.PlayerShot, -GameConfig.PlayerShotSpeed, 0, GameConfig.PlayerShotCooldown);
+            PlayerShot = new Shot(Sprites.Instance.PlayerShot, -GameConfig.Instance.PlayerShotSpeed, 0, GameConfig.Instance.PlayerShotCooldown);
 
-            AlienShot = new Shot(Sprites.Instance.AlienShot, GameConfig.AlienShotSpeed, GameConfig.WindowHeight, GameConfig.AlienShotCooldown);
+            AlienShot = new Shot(Sprites.Instance.AlienShot, GameConfig.Instance.AlienShotSpeed,
+                GameConfig.Instance.WindowHeight, GameConfig.Instance.AlienShotCooldown);
 
             Aliens = new List<List<Alien>>();
 
-            int witdhtForEnemy = (GameConfig.WindowWidth - (GameConfig.WindowWidth / GameConfig.FreeWidth)) / GameConfig.EnemyColumns;
+            int widhtForEnemy = (GameConfig.Instance.WindowWidth - (GameConfig.Instance.WindowWidth / GameConfig.Instance.FreeWidth)) / GameConfig.Instance.EnemyColumns;
 
-            int alienY = GameConfig.WindowHeight / 8;
+            int alienY = GameConfig.Instance.WindowHeight / 8;
 
-            for (int i = 0; i < GameConfig.EnemyRows; i++)
+            for (int i = 0; i < GameConfig.Instance.EnemyRows; i++)
             {
                 Aliens.Add(new List<Alien>());
-                for (int j = 0; j < GameConfig.EnemyColumns; j++)
+                for (int j = 0; j < GameConfig.Instance.EnemyColumns; j++)
                 {
-                    Aliens[i].Add(new Alien(Sprites.Instance.Aliens[i]));
-                    Aliens[i][j].X = j * witdhtForEnemy + (witdhtForEnemy - Aliens[i][j].Width) / 2;
+                    Aliens[i].Add(new Alien(Sprites.Instance.Aliens[i], GameConfig.Instance.AlienHorizontalMoveSpeed));
+                    Aliens[i][j].X = j * widhtForEnemy + (widhtForEnemy - Aliens[i][j].Width) / 2;
                     Aliens[i][j].Y = alienY;
                 }
-                alienY += Aliens[i][0].Height + GameConfig.VerticalGap;
+                alienY += Aliens[i][0].Height + GameConfig.Instance.VerticalGap;
             }
 
-            FlyingSaucer = new FlyingSaucer(Sprites.Instance.FlyingSaucer, GameConfig.FlyingSaucerMoveSpeed, 0);
+            FlyingSaucer = new FlyingSaucer(Sprites.Instance.FlyingSaucer, GameConfig.Instance.FlyingSaucerMoveSpeed, 0);
 
             Blocks = new List<Block>();
 
             int longestBlockRow = 0;
 
-            for (int i = 0; i < GameConfig.BlockStructure.Length; i++)
+            for (int i = 0; i < GameConfig.Instance.BlockStructure.Length; i++)
             {
-                if (GameConfig.BlockStructure[i].Length > longestBlockRow)
+                if (GameConfig.Instance.BlockStructure[i].Length > longestBlockRow)
                 {
-                    longestBlockRow = GameConfig.BlockStructure[i].Length;
+                    longestBlockRow = GameConfig.Instance.BlockStructure[i].Length;
                 }
             }
 
             int structureLenght = longestBlockRow * Sprites.Instance.Block[0].Width;
 
-            int gap = (GameConfig.WindowWidth - (structureLenght * GameConfig.StructureCount)) / (GameConfig.StructureCount + 1);
+            int gap = (GameConfig.Instance.WindowWidth - (structureLenght * GameConfig.Instance.StructureCount)) / (GameConfig.Instance.StructureCount + 1);
 
             int structureX = gap;
 
-            for (int i = 0; i < GameConfig.StructureCount; i++)
+            for (int i = 0; i < GameConfig.Instance.StructureCount; i++)
             {
                 CreateStructure(structureX);
                 structureX += structureLenght + gap;
@@ -172,7 +172,7 @@ namespace SpaceInvaders
 
             if (TimerBeforeGameOver != 0)
             {
-                if (TimerBeforeGameOver == GameConfig.FreePeriodAfterGameOver)
+                if (TimerBeforeGameOver == GameConfig.Instance.FreePeriodAfterGameOver)
                 {
                     GameOver = true;
                 }
@@ -248,13 +248,13 @@ namespace SpaceInvaders
                 FlyingSaucer.Active = false;
                 FlyingSaucer.Exploding = true;
                 FlyingSaucer.AnimationState = 1;
-                if(PlayerShip.Lives <= GameConfig.InitialLives)
+                if(PlayerShip.Lives <= GameConfig.Instance.InitialLives)
                 {
                     PlayerShip.Lives++;
                 }
                 else
                 {
-                    Score += GameConfig.FlyingSaucerScore;
+                    Score += GameConfig.Instance.FlyingSaucerScore;
                 }                
             }
         }
@@ -273,19 +273,19 @@ namespace SpaceInvaders
             if (FlyingSaucer.Exploding)
             {
                 FlyingSaucer.ExplosionFrameCounter++;
-                if (FlyingSaucer.ExplosionFrameCounter == GameConfig.FlyingSaucerExplosionFrames)
+                if (FlyingSaucer.ExplosionFrameCounter == GameConfig.Instance.FlyingSaucerExplosionFrames)
                 {
                     FlyingSaucer.Exploding = false;
                     FlyingSaucer.ExplosionFrameCounter = 0;
                 }
             }
 
-            if (FlyingSaucerSpawnFrameCounter == GameConfig.FlyingSaucerSpawnInterval)
+            if (FlyingSaucerSpawnFrameCounter == GameConfig.Instance.FlyingSaucerSpawnInterval)
             {
                 FlyingSaucerSpawnFrameCounter = 0;
                 FlyingSaucer.AnimationState = 0;
-                FlyingSaucer.X = GameConfig.WindowWidth - FlyingSaucer.Width;
-                FlyingSaucer.Y = GameConfig.WindowHeight / 12;
+                FlyingSaucer.X = GameConfig.Instance.WindowWidth - FlyingSaucer.Width;
+                FlyingSaucer.Y = GameConfig.Instance.WindowHeight / 12;
                 FlyingSaucer.Active = true;
             }
         }
@@ -295,13 +295,13 @@ namespace SpaceInvaders
             int blockWidth = Sprites.Instance.Block[0].Width;
             int blockHeight = Sprites.Instance.Block[0].Height;
 
-            int blockY = (GameConfig.WindowHeight - GameConfig.WindowHeight / 4);
+            int blockY = (GameConfig.Instance.WindowHeight - GameConfig.Instance.WindowHeight / 4);
 
-            for (int i = 0; i < GameConfig.BlockStructure.Length; i++)
+            for (int i = 0; i < GameConfig.Instance.BlockStructure.Length; i++)
             {
-                for (int j = 0; j < GameConfig.BlockStructure[i].Length; j++)
+                for (int j = 0; j < GameConfig.Instance.BlockStructure[i].Length; j++)
                 {
-                    if (GameConfig.BlockStructure[i][j] == '#')
+                    if (GameConfig.Instance.BlockStructure[i][j] == '#')
                     {
                         Block block = new Block(Sprites.Instance.Block, Sprites.Instance.Block.Length);
                         block.X = structureX + j * blockWidth;
@@ -398,11 +398,11 @@ namespace SpaceInvaders
                 {
                     if (Aliens[i][j].Alive)
                     {
-                        Aliens[i][j].Y += GameConfig.AlienVerticalMoveSpeed;
+                        Aliens[i][j].Y += GameConfig.Instance.AlienVerticalMoveSpeed;
                     }
                 }
             }
-            if (Aliens[Aliens.Count - 1][0].Y + Aliens[Aliens.Count - 1][0].Height + GameConfig.AlienVerticalMoveSpeed >= GameConfig.AlienMinY)
+            if (Aliens[Aliens.Count - 1][0].Y + Aliens[Aliens.Count - 1][0].Height + GameConfig.Instance.AlienVerticalMoveSpeed >= GameConfig.Instance.AlienMinY)
             {
                 GameOver = true;
             }
@@ -420,7 +420,7 @@ namespace SpaceInvaders
                         PlayerShot.Active = false;
                         Aliens[i][j].Exploding = true;
                         Aliens[i][j].AnimationState = 2;
-                        Score += GameConfig.AlienRowScoreValue[i];
+                        Score += GameConfig.Instance.AlienRowScoreValue[i];
                     }
 
                     if ((!Aliens[i][j].Alive && !Aliens[i][j].Exploding)
@@ -448,11 +448,11 @@ namespace SpaceInvaders
             {
                 for (int j = 0; j < Aliens[i].Count; j++)
                 {
-                    Aliens[i][j].X -= GameConfig.AlienHorizontalMoveSpeed;
+                    Aliens[i][j].MoveLeft();
                     Aliens[i][j].ChangeAnimation();
                 }
             }
-            if (Aliens[0][0].X - GameConfig.AlienHorizontalMoveSpeed < 0)
+            if (Aliens[0][0].X - GameConfig.Instance.AlienHorizontalMoveSpeed < 0)
             {
                 ReachedEndOfScreen = true;
             }
@@ -464,11 +464,11 @@ namespace SpaceInvaders
             {
                 for (int j = 0; j < Aliens[i].Count; j++)
                 {
-                    Aliens[i][j].X += GameConfig.AlienHorizontalMoveSpeed;
+                    Aliens[i][j].MoveRight();
                     Aliens[i][j].ChangeAnimation();
                 }
             }
-            if (Aliens[0][Aliens[0].Count - 1].X + Aliens[0][Aliens[0].Count - 1].Width + GameConfig.AlienHorizontalMoveSpeed >= GameConfig.WindowWidth)
+            if (Aliens[0][Aliens[0].Count - 1].X + Aliens[0][Aliens[0].Count - 1].Width + GameConfig.Instance.AlienHorizontalMoveSpeed >= GameConfig.Instance.WindowWidth)
             {
                 ReachedEndOfScreen = true;
             }
