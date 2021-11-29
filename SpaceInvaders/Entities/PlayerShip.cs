@@ -7,39 +7,33 @@ using System.Threading.Tasks;
 
 namespace SpaceInvaders.Entities
 {
-    public class PlayerShip : EntityBase
+    public class PlayerShip : ComplexEntity
     {
-        public PlayerShip(Image[] sprites, int lives, int speed, int leftBoundary, int rightBoundary) : base(sprites)
+        public PlayerShip(Image[] sprites, int lives, int speed, int leftBoundary, int rightBoundary) : base(sprites, speed)
         {
             Lives = lives;
-            Speed = speed;
             LeftBoundary = leftBoundary;
             RightBoundary = rightBoundary;
-            Exploding = false;
             ExplosionFrameCounter = 0;
         }
 
         public int Lives { get; set; }
 
-        private int Speed { get; }
-
         private int LeftBoundary { get; }
 
         private int RightBoundary { get; }
 
-        public bool Alive
+        public override bool Alive
         {
             get
             {
                 return Lives > 0;
             }
         }
-        
-        public bool Exploding { get; set; }
 
         private int ExplosionFrameCounter { get; set; }
 
-        public void Shoot(Shot playerShot)
+        public override void Shoot(Shot playerShot)
         {
             playerShot.X = X + (Width / 2) - (playerShot.Width / 2);
             playerShot.Y = Y - playerShot.Height;
@@ -47,7 +41,7 @@ namespace SpaceInvaders.Entities
             playerShot.Cooldown = playerShot.CooldownSetting;
         }
 
-        public void MoveLeft()
+        public override void MoveLeft()
         {
             if (X - Speed >= LeftBoundary)
             {
@@ -55,7 +49,7 @@ namespace SpaceInvaders.Entities
             }
         }
 
-        public void MoveRight()
+        public override void MoveRight()
         {
             if (X + Width + Speed <= RightBoundary)
             {
