@@ -56,15 +56,29 @@ namespace SpaceInvaders
 
             AlienMoveInterval = GameConfig.Instance.AlienMoveIntervalInitial;
 
+            InitPlayer();
+
+            PlayerShot = new Shot(Sprites.Instance.PlayerShot, -GameConfig.Instance.PlayerShotSpeed, 0, GameConfig.Instance.PlayerShotCooldown);
+
+            GameConfig.Instance.AlienMinY = PlayerShip.Y;
+
+            InitAliens();
+
+            FlyingSaucer = new FlyingSaucer(Sprites.Instance.FlyingSaucer, GameConfig.Instance.FlyingSaucerMoveSpeed, 0);
+
+            InitStructures();
+        }
+
+        private void InitPlayer()
+        {
             PlayerShip = new PlayerShip(Sprites.Instance.PlayerShip, GameConfig.Instance.InitialLives,
                 GameConfig.Instance.PlayerMoveSpeed, 0, GameConfig.Instance.WindowWidth);
             PlayerShip.X = (GameConfig.Instance.WindowWidth / 2) - (PlayerShip.Width / 2);
             PlayerShip.Y = (GameConfig.Instance.WindowHeight - GameConfig.Instance.WindowHeight / 8);
+        }
 
-            GameConfig.Instance.AlienMinY = PlayerShip.Y;
-
-            PlayerShot = new Shot(Sprites.Instance.PlayerShot, -GameConfig.Instance.PlayerShotSpeed, 0, GameConfig.Instance.PlayerShotCooldown);
-
+        private void InitAliens()
+        {
             AlienShot = new Shot(Sprites.Instance.AlienShot, GameConfig.Instance.AlienShotSpeed,
                 GameConfig.Instance.WindowHeight, GameConfig.Instance.AlienShotCooldown);
 
@@ -85,9 +99,10 @@ namespace SpaceInvaders
                 }
                 alienY += Aliens[i][0].Height + GameConfig.Instance.VerticalGap;
             }
+        }
 
-            FlyingSaucer = new FlyingSaucer(Sprites.Instance.FlyingSaucer, GameConfig.Instance.FlyingSaucerMoveSpeed, 0);
-
+        private void InitStructures()
+        {
             Blocks = new List<Block>();
 
             int longestBlockRow = 0;
